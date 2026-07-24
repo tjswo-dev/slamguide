@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --yes)",
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(npx shadcn@latest add select badge input textarea card tabs)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('Syntax OK'\\)\")",
+      "Bash(pip show *)",
+      "Bash(streamlit run *)",
+      "Bash(pkill -f \"streamlit run app.py\")",
+      "Bash(python *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('name','?'\\), d.get\\('version','?'\\)\\)\")",
+      "Bash(git -C /Users/kim/Desktop/BrandSlam/slamguide remote -v)",
+      "Bash(git -C /Users/kim/Desktop/BrandSlam/slamguide log --oneline -3)",
+      "Bash(vercel --version)",
+      "Bash(git remote *)",
+      "Bash(git *)"
+    ]
+  }
+}

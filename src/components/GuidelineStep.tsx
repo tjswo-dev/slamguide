@@ -7,11 +7,13 @@ import { Download, Copy, RotateCcw, ImagePlus, Check } from "lucide-react";
 import { useState } from "react";
 
 const SECTION_COLORS: Record<string, { bg: string; border: string; text: string }> = {
-  "0 – 5초":  { bg: "bg-red-500",    border: "border-red-500",    text: "text-red-400" },
-  "5 – 15초": { bg: "bg-orange-500", border: "border-orange-500", text: "text-orange-400" },
-  "15 – 40초":{ bg: "bg-blue-500",   border: "border-blue-500",   text: "text-blue-400" },
-  "40 – 55초":{ bg: "bg-emerald-500",border: "border-emerald-500",text: "text-emerald-400" },
-  "55 – 60초":{ bg: "bg-violet-500", border: "border-violet-500", text: "text-violet-400" },
+  "0 – 5초":   { bg: "bg-red-500",     border: "border-red-500",     text: "text-red-400" },
+  "5 – 19초":  { bg: "bg-orange-500",  border: "border-orange-500",  text: "text-orange-400" },
+  "19 – 24초": { bg: "bg-amber-500",   border: "border-amber-500",   text: "text-amber-400" },
+  "24 – 34초": { bg: "bg-blue-500",    border: "border-blue-500",    text: "text-blue-400" },
+  "34 – 45초": { bg: "bg-cyan-500",    border: "border-cyan-500",    text: "text-cyan-400" },
+  "45 – 53초": { bg: "bg-emerald-500", border: "border-emerald-500", text: "text-emerald-400" },
+  "53 – 60초": { bg: "bg-violet-500",  border: "border-violet-500",  text: "text-violet-400" },
 };
 
 type Props = {
@@ -112,19 +114,19 @@ export default function GuidelineStep({ guideline, productImageUrl, onReset }: P
               </div>
 
               {/* 좌우 레이아웃 */}
-              <div className="grid grid-cols-1 md:grid-cols-[220px_1fr]">
+              <div className="grid grid-cols-1 md:grid-cols-[260px_1fr]">
                 {/* 왼쪽: 이미지 슬롯 */}
-                <div className="border-r border-gray-700/50 bg-gray-900/50 flex flex-col items-center justify-center p-4 min-h-[180px]">
+                <div className="border-r border-gray-700/50 bg-gray-900/50 flex flex-col items-center justify-center overflow-hidden min-h-[260px]">
                   {sectionImages[idx] ? (
-                    <div className="relative w-full">
+                    <div className="relative w-full h-[260px]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={sectionImages[idx]}
                         alt={`${section.title} 이미지`}
-                        className="w-full rounded-lg object-contain max-h-48"
+                        className="w-full h-full object-cover object-center"
                       />
                       <button
-                        className="absolute top-1 right-1 w-5 h-5 bg-gray-800 rounded-full shadow text-gray-400 flex items-center justify-center text-xs hover:text-white"
+                        className="absolute top-2 right-2 w-6 h-6 bg-gray-900/80 rounded-full shadow text-gray-300 flex items-center justify-center text-xs hover:text-white"
                         onClick={() =>
                           setSectionImages((prev) => {
                             const n = { ...prev };
@@ -137,7 +139,7 @@ export default function GuidelineStep({ guideline, productImageUrl, onReset }: P
                       </button>
                     </div>
                   ) : (
-                    <label className="flex flex-col items-center gap-2 cursor-pointer text-gray-600 hover:text-violet-400 transition-colors w-full">
+                    <label className="flex flex-col items-center gap-2 cursor-pointer text-gray-600 hover:text-violet-400 transition-colors w-full h-full min-h-[260px]">
                       <input
                         type="file"
                         accept="image/*"
@@ -146,23 +148,25 @@ export default function GuidelineStep({ guideline, productImageUrl, onReset }: P
                           e.target.files?.[0] && handleSectionImage(idx, e.target.files[0])
                         }
                       />
-                      {idx === 0 && productImageUrl ? (
-                        <div className="relative w-full">
+                      {section.imageUrl ? (
+                        <div className="relative w-full h-[260px]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src={productImageUrl}
-                            alt="제품"
-                            className="w-full rounded-lg object-contain max-h-40"
+                            src={idx === 0 ? (productImageUrl ?? section.imageUrl) : section.imageUrl}
+                            alt={`${section.title} 레퍼런스`}
+                            className="w-full h-full object-cover object-center"
                           />
-                          <p className="text-xs text-gray-600 mt-1 text-center">클릭하여 교체</p>
+                          <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-end justify-center pb-2">
+                            <p className="text-xs text-white/70 opacity-0 hover:opacity-100 transition-opacity">클릭하여 교체</p>
+                          </div>
                         </div>
                       ) : (
-                        <>
+                        <div className="flex flex-col items-center justify-center gap-2 w-full h-full min-h-[260px]">
                           <ImagePlus size={28} className="text-gray-700" />
                           <span className="text-xs text-center text-gray-600">
                             사진 추가<br />(선택사항)
                           </span>
-                        </>
+                        </div>
                       )}
                     </label>
                   )}

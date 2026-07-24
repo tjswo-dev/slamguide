@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AppStep, Country, Guideline, MockVideo, ProductInfo } from "@/types";
 import { CATEGORIES, COUNTRIES, MOCK_VIDEOS_BY_CATEGORY } from "@/data/categories";
+import { DEMO_GUIDELINE } from "@/data/demoGuideline";
 import StepIndicator from "@/components/StepIndicator";
 import SetupStep from "@/components/SetupStep";
 import VideoStep from "@/components/VideoStep";
@@ -66,40 +67,14 @@ export default function Home() {
     setLoading(true);
     setError(null);
 
-    const category = CATEGORIES.find((c) => c.id === categoryId);
-    const subcategory = category?.subcategories.find((s) => s.id === subcategoryId);
-    const selectedVideos = videos.filter((v) => v.selected);
-
-    try {
-      const res = await fetch("/api/generate-guideline", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          productName: productInfo.name,
-          sellingPoints: productInfo.sellingPoints,
-          country: selectedCountries.map((c) => c.label).join(", "),
-          category: category?.label ?? "",
-          subcategory: subcategory?.label ?? "",
-          videoTitles: selectedVideos.map((v) => v.title),
-        }),
-      });
-
-      if (!res.ok) throw new Error("API 오류");
-      const data = await res.json();
-
-      setGuideline({
-        productName: productInfo.name,
-        country: selectedCountries.map((c) => `${c.flag} ${c.label}`).join(" · "),
-        category: category?.label ?? "",
-        subcategory: subcategory?.label ?? "",
-        sections: data.sections,
-      });
-      setStep("guideline");
-    } catch {
-      setError("가이드라인 생성에 실패했습니다. 잠시 후 다시 시도해주세요.");
-    } finally {
-      setLoading(false);
-    }
+    // 데모: API 없이 하드코딩된 가이드라인 표시
+    await new Promise((r) => setTimeout(r, 1800));
+    setGuideline({
+      ...DEMO_GUIDELINE,
+      productName: productInfo.name || DEMO_GUIDELINE.productName,
+    });
+    setLoading(false);
+    setStep("guideline");
   };
 
   const handleReset = () => {

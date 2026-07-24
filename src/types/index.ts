@@ -43,6 +43,7 @@ export type GuidelineSection = {
   script: string;
   shotTips: string[];
   captionTip: string;
+  imageUrl?: string;
 };
 
 export type Guideline = {

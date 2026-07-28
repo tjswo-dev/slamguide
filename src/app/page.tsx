@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { AppStep, Country, Guideline, MockVideo, ProductInfo } from "@/types";
-import { CATEGORIES, COUNTRIES, MOCK_VIDEOS_BY_CATEGORY } from "@/data/categories";
+import { MOCK_VIDEOS_BY_CATEGORY } from "@/data/categories";
+import { supabase } from "@/lib/supabase";
 import { DEMO_GUIDELINE } from "@/data/demoGuideline";
 import StepIndicator from "@/components/StepIndicator";
 import SetupStep from "@/components/SetupStep";
@@ -26,7 +27,7 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchingCountries, setSearchingCountries] = useState<string[]>([]);
 
-  const handleSetupNext = (data: {
+  const handleSetupNext = async (data: {
     countries: Country[];
     categoryId: string;
     subcategoryId: string;
@@ -38,11 +39,35 @@ export default function Home() {
     setSearchingCountries(data.countries.map((c) => `${c.flag} ${c.label}`));
     setIsSearching(true);
 
-    const mockPool =
-      MOCK_VIDEOS_BY_CATEGORY[data.subcategoryId] ??
-      MOCK_VIDEOS_BY_CATEGORY[data.categoryId] ??
-      MOCK_VIDEOS_BY_CATEGORY["default"];
-    setVideos(mockPool.map((v) => ({ ...v, selected: true })));
+    const countryCodes = data.countries.map((c) => c.code);
+    const { data: dbVideos } = await supabase
+      .from("videos")
+      .select("*")
+      .in("country_code", countryCodes)
+      .eq("subcategory_id", data.subcategoryId)
+      .limit(3);
+
+    if (dbVideos && dbVideos.length > 0) {
+      setVideos(
+        dbVideos.map((v) => ({
+          id: v.id,
+          title: v.title,
+          channel: v.channel,
+          username: v.username ?? undefined,
+          views: v.views,
+          likes: v.likes,
+          tiktokId: v.tiktok_id,
+          videoUrl: v.video_url ?? undefined,
+          selected: true,
+        }))
+      );
+    } else {
+      const mockPool =
+        MOCK_VIDEOS_BY_CATEGORY[data.subcategoryId] ??
+        MOCK_VIDEOS_BY_CATEGORY[data.categoryId] ??
+        MOCK_VIDEOS_BY_CATEGORY["default"];
+      setVideos(mockPool.map((v) => ({ ...v, selected: true })));
+    }
   };
 
   const handleSearchDone = () => {

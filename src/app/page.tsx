@@ -20,27 +20,21 @@ export default function Home() {
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [categoryId, setCategoryId] = useState("");
   const [subcategoryId, setSubcategoryId] = useState("");
-  const [keywords, setKeywords] = useState<string[]>([]);
   const [videos, setVideos] = useState<MockVideo[]>([]);
   const [product, setProduct] = useState<ProductInfo | null>(null);
   const [guideline, setGuideline] = useState<Guideline | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [searchingKeywords, setSearchingKeywords] = useState<string[]>([]);
   const [searchingCountries, setSearchingCountries] = useState<string[]>([]);
 
   const handleSetupNext = (data: {
     countries: Country[];
     categoryId: string;
     subcategoryId: string;
-    keywords: string[];
   }) => {
     setSelectedCountries(data.countries);
     setCategoryId(data.categoryId);
     setSubcategoryId(data.subcategoryId);
-    setKeywords(data.keywords);
 
-    // 로딩 화면 표시용 상태
-    setSearchingKeywords(data.keywords);
     setSearchingCountries(data.countries.map((c) => `${c.flag} ${c.label}`));
     setIsSearching(true);
 
@@ -82,7 +76,6 @@ export default function Home() {
     setSelectedCountries([]);
     setCategoryId("");
     setSubcategoryId("");
-    setKeywords([]);
     setVideos([]);
     setProduct(null);
     setGuideline(null);
@@ -94,7 +87,6 @@ export default function Home() {
     <div className="min-h-screen bg-gray-950">
       {isSearching && (
         <SearchingScreen
-          keywords={searchingKeywords}
           countries={searchingCountries}
           onDone={handleSearchDone}
         />
@@ -118,7 +110,7 @@ export default function Home() {
             <>
               <h2 className="text-2xl font-bold text-white">조사 조건 설정</h2>
               <p className="text-gray-400 mt-1">
-                타겟 국가, 카테고리, 키워드를 선택하면 대표 TikTok 영상을 찾아드립니다.
+                타겟 국가와 카테고리를 선택하면 대표 TikTok 영상을 찾아드립니다.
               </p>
             </>
           )}
@@ -166,7 +158,6 @@ export default function Home() {
               onToggle={handleVideoToggle}
               onNext={() => setStep("product")}
               onBack={() => setStep("setup")}
-              keywords={keywords}
               countries={selectedCountries.map((c) => `${c.flag} ${c.label}`)}
             />
           )}

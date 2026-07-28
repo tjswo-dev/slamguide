@@ -1,19 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { CATEGORIES, COUNTRIES, getKeywordsForCountries } from "@/data/categories";
-import { Badge } from "@/components/ui/badge";
+import { CATEGORIES, COUNTRIES } from "@/data/categories";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Country, Subcategory } from "@/types";
-import { Search, X, Plus } from "lucide-react";
+import { Search } from "lucide-react";
 
 type Props = {
   onNext: (data: {
     countries: Country[];
     categoryId: string;
     subcategoryId: string;
-    keywords: string[];
   }) => void;
 };
 
@@ -21,58 +18,29 @@ export default function SetupStep({ onNext }: Props) {
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([COUNTRIES[0]]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>("");
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [keywordInput, setKeywordInput] = useState("");
 
   const selectedCategory = CATEGORIES.find((c) => c.id === selectedCategoryId);
-  const selectedSubcategory = selectedCategory?.subcategories.find(
-    (s) => s.id === selectedSubcategoryId
-  );
 
   const toggleCountry = (country: Country) => {
     const next = selectedCountries.find((c) => c.code === country.code)
       ? selectedCountries.filter((c) => c.code !== country.code)
       : [...selectedCountries, country];
     setSelectedCountries(next);
-
-    // 국가 변경 시 현재 선택된 서브카테고리의 키워드 재계산
-    if (selectedSubcategoryId) {
-      const cat = CATEGORIES.find((c) => c.id === selectedCategoryId);
-      const sub = cat?.subcategories.find((s) => s.id === selectedSubcategoryId);
-      if (sub) {
-        setKeywords(getKeywordsForCountries(sub.keywords, next.map((c) => c.code)));
-      }
-    }
   };
 
   const selectCategory = (id: string) => {
     setSelectedCategoryId(id);
     setSelectedSubcategoryId("");
-    setKeywords([]);
   };
 
   const selectSubcategory = (sub: Subcategory) => {
     setSelectedSubcategoryId(sub.id);
-    setKeywords(getKeywordsForCountries(sub.keywords, selectedCountries.map((c) => c.code)));
-  };
-
-  const addKeyword = () => {
-    const trimmed = keywordInput.trim();
-    if (trimmed && !keywords.includes(trimmed)) {
-      setKeywords((prev) => [...prev, trimmed]);
-    }
-    setKeywordInput("");
-  };
-
-  const removeKeyword = (kw: string) => {
-    setKeywords((prev) => prev.filter((k) => k !== kw));
   };
 
   const canProceed =
     selectedCountries.length > 0 &&
     selectedCategoryId &&
-    selectedSubcategoryId &&
-    keywords.length > 0;
+    selectedSubcategoryId;
 
   return (
     <div className="space-y-8">
@@ -146,48 +114,6 @@ export default function SetupStep({ onNext }: Props) {
         )}
       </div>
 
-      {/* 키워드 */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          검색 키워드
-          {selectedSubcategory && (
-            <span className="ml-2 text-xs text-violet-500 normal-case font-normal">
-              (서브카테고리 선택 시 자동 추천)
-            </span>
-          )}
-        </h3>
-        <div className="flex flex-wrap gap-2 mb-3 min-h-[36px]">
-          {keywords.map((kw) => (
-            <Badge
-              key={kw}
-              className="flex items-center gap-1 px-3 py-1 text-sm bg-violet-500/20 text-violet-300 border border-violet-500/40 hover:bg-violet-500/30"
-            >
-              {kw}
-              <button onClick={() => removeKeyword(kw)}>
-                <X size={12} />
-              </button>
-            </Badge>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          <Input
-            placeholder="키워드 직접 입력 후 Enter"
-            value={keywordInput}
-            onChange={(e) => setKeywordInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addKeyword()}
-            className="max-w-xs bg-gray-800 border-gray-700 text-gray-200 placeholder:text-gray-600 focus:border-violet-500"
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addKeyword}
-            className="gap-1 border-gray-700 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200"
-          >
-            <Plus size={14} /> 추가
-          </Button>
-        </div>
-      </div>
-
       {/* CTA */}
       <div className="pt-2">
         <Button
@@ -197,7 +123,6 @@ export default function SetupStep({ onNext }: Props) {
               countries: selectedCountries,
               categoryId: selectedCategoryId,
               subcategoryId: selectedSubcategoryId,
-              keywords,
             })
           }
           disabled={!canProceed}
@@ -208,7 +133,7 @@ export default function SetupStep({ onNext }: Props) {
         </Button>
         {!canProceed && (
           <p className="text-xs text-gray-600 mt-2">
-            국가, 카테고리, 키워드를 모두 선택해주세요.
+            국가와 카테고리를 모두 선택해주세요.
           </p>
         )}
       </div>

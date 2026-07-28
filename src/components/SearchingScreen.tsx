@@ -14,12 +14,11 @@ const STEPS = [
 const TOTAL_MS = 8000;
 
 type Props = {
-  keywords: string[];
   countries: string[];
   onDone: () => void;
 };
 
-export default function SearchingScreen({ keywords, countries, onDone }: Props) {
+export default function SearchingScreen({ countries, onDone }: Props) {
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoCount, setVideoCount] = useState(0);
@@ -81,11 +80,6 @@ export default function SearchingScreen({ keywords, countries, onDone }: Props) 
         {countries.map((c) => (
           <span key={c} className="px-2.5 py-1 rounded-full text-xs bg-gray-800 text-gray-400 border border-gray-700">
             {c}
-          </span>
-        ))}
-        {keywords.slice(0, 4).map((kw) => (
-          <span key={kw} className="px-2.5 py-1 rounded-full text-xs bg-violet-500/20 text-violet-300 border border-violet-500/40">
-            {kw}
           </span>
         ))}
       </div>

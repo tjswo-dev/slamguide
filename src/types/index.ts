@@ -10,12 +10,9 @@ export type Category = {
   subcategories: Subcategory[];
 };
 
-export type LangCode = "en" | "zh" | "ja" | "ko";
-
 export type Subcategory = {
   id: string;
   label: string;
-  keywords: Record<LangCode, string[]>;
 };
 
 export type MockVideo = {

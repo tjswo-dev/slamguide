@@ -11,7 +11,6 @@ type Props = {
   onToggle: (id: string) => void;
   onNext: () => void;
   onBack: () => void;
-  keywords: string[];
   countries: string[];
 };
 
@@ -20,7 +19,6 @@ export default function VideoStep({
   onToggle,
   onNext,
   onBack,
-  keywords,
   countries,
 }: Props) {
   const selectedCount = videos.filter((v) => v.selected).length;
@@ -33,11 +31,6 @@ export default function VideoStep({
         {countries.map((c) => (
           <Badge key={c} className="text-xs bg-gray-800 text-gray-400 border border-gray-700">
             {c}
-          </Badge>
-        ))}
-        {keywords.map((kw) => (
-          <Badge key={kw} className="text-xs bg-violet-500/20 text-violet-300 border border-violet-500/40">
-            {kw}
           </Badge>
         ))}
       </div>

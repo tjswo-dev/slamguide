@@ -22,6 +22,7 @@ export const CATEGORIES: Category[] = [
       { id: "sunscreen", label: "선크림 / SPF" },
       { id: "mask_pack", label: "마스크팩" },
       { id: "cleansing", label: "클렌징" },
+      { id: "device", label: "디바이스" },
     ],
   },
   {

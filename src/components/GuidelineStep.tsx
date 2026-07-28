@@ -116,17 +116,17 @@ export default function GuidelineStep({ guideline, productImageUrl, onReset }: P
               {/* 좌우 레이아웃 */}
               <div className="grid grid-cols-1 md:grid-cols-[260px_1fr]">
                 {/* 왼쪽: 이미지 슬롯 */}
-                <div className="border-r border-gray-700/50 bg-gray-900/50 flex flex-col items-center justify-center overflow-hidden min-h-[260px]">
+                <div className="border-r border-gray-700/50 bg-gray-900/50 relative overflow-hidden min-h-[260px]">
                   {sectionImages[idx] ? (
-                    <div className="relative w-full h-[260px]">
+                    <>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={sectionImages[idx]}
                         alt={`${section.title} 이미지`}
-                        className="w-full h-full object-cover object-center"
+                        className="absolute inset-0 w-full h-full object-cover object-center"
                       />
                       <button
-                        className="absolute top-2 right-2 w-6 h-6 bg-gray-900/80 rounded-full shadow text-gray-300 flex items-center justify-center text-xs hover:text-white"
+                        className="absolute top-2 right-2 w-6 h-6 bg-gray-900/80 rounded-full shadow text-gray-300 flex items-center justify-center text-xs hover:text-white z-10"
                         onClick={() =>
                           setSectionImages((prev) => {
                             const n = { ...prev };
@@ -137,9 +137,9 @@ export default function GuidelineStep({ guideline, productImageUrl, onReset }: P
                       >
                         ✕
                       </button>
-                    </div>
+                    </>
                   ) : (
-                    <label className="flex flex-col items-center gap-2 cursor-pointer text-gray-600 hover:text-violet-400 transition-colors w-full h-full min-h-[260px]">
+                    <label className="absolute inset-0 flex flex-col items-center justify-center gap-2 cursor-pointer text-gray-600 hover:text-violet-400 transition-colors">
                       <input
                         type="file"
                         accept="image/*"
@@ -149,24 +149,24 @@ export default function GuidelineStep({ guideline, productImageUrl, onReset }: P
                         }
                       />
                       {section.imageUrl ? (
-                        <div className="relative w-full h-[260px]">
+                        <>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={idx === 0 ? (productImageUrl ?? section.imageUrl) : section.imageUrl}
                             alt={`${section.title} 레퍼런스`}
-                            className="w-full h-full object-cover object-center"
+                            className="absolute inset-0 w-full h-full object-cover object-center"
                           />
                           <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-end justify-center pb-2">
                             <p className="text-xs text-white/70 opacity-0 hover:opacity-100 transition-opacity">클릭하여 교체</p>
                           </div>
-                        </div>
+                        </>
                       ) : (
-                        <div className="flex flex-col items-center justify-center gap-2 w-full h-full min-h-[260px]">
+                        <>
                           <ImagePlus size={28} className="text-gray-700" />
                           <span className="text-xs text-center text-gray-600">
                             사진 추가<br />(선택사항)
                           </span>
-                        </div>
+                        </>
                       )}
                     </label>
                   )}

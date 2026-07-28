@@ -14,7 +14,7 @@ type Props = {
 export default function TikTokVideoCard({ videoId, username, videoUrl, title, channel }: Props) {
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [thumbLoading, setThumbLoading] = useState(true);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
 
   useEffect(() => {
     fetch(`/api/tiktok-oembed?url=${encodeURIComponent(videoUrl)}`)

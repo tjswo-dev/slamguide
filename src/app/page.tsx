@@ -118,7 +118,7 @@ export default function Home() {
       )}
       {/* 헤더 */}
       <header className="border-b border-gray-800 bg-gray-950/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-lg font-bold text-white tracking-tight">
               <span className="text-violet-400">Slam</span>Guide
@@ -129,7 +129,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-10">
+      <main className="max-w-7xl mx-auto px-4 py-10">
         <div className="mb-8">
           {step === "setup" && (
             <>

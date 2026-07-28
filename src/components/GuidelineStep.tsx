@@ -7,6 +7,7 @@ import { Download, Copy, RotateCcw, ImagePlus, Check } from "lucide-react";
 import { useState } from "react";
 
 const SECTION_COLORS: Record<string, { bg: string; border: string; text: string }> = {
+  // 기본 (60초 포맷)
   "0 – 5초":   { bg: "bg-red-500",     border: "border-red-500",     text: "text-red-400" },
   "5 – 19초":  { bg: "bg-orange-500",  border: "border-orange-500",  text: "text-orange-400" },
   "19 – 24초": { bg: "bg-amber-500",   border: "border-amber-500",   text: "text-amber-400" },
@@ -14,6 +15,13 @@ const SECTION_COLORS: Record<string, { bg: string; border: string; text: string 
   "34 – 45초": { bg: "bg-cyan-500",    border: "border-cyan-500",    text: "text-cyan-400" },
   "45 – 53초": { bg: "bg-emerald-500", border: "border-emerald-500", text: "text-emerald-400" },
   "53 – 60초": { bg: "bg-violet-500",  border: "border-violet-500",  text: "text-violet-400" },
+  // 디바이스 (45초 포맷)
+  "0 – 3초":   { bg: "bg-red-500",     border: "border-red-500",     text: "text-red-400" },
+  "3 – 9초":   { bg: "bg-orange-500",  border: "border-orange-500",  text: "text-orange-400" },
+  "9 – 18초":  { bg: "bg-amber-500",   border: "border-amber-500",   text: "text-amber-400" },
+  "18 – 28초": { bg: "bg-blue-500",    border: "border-blue-500",    text: "text-blue-400" },
+  "28 – 38초": { bg: "bg-cyan-500",    border: "border-cyan-500",    text: "text-cyan-400" },
+  "38 – 45초": { bg: "bg-violet-500",  border: "border-violet-500",  text: "text-violet-400" },
 };
 
 type Props = {

@@ -5,6 +5,7 @@ import { AppStep, Country, Guideline, MockVideo, ProductInfo } from "@/types";
 import { MOCK_VIDEOS_BY_CATEGORY } from "@/data/categories";
 import { supabase } from "@/lib/supabase";
 import { DEMO_GUIDELINE } from "@/data/demoGuideline";
+import { DEVICE_GUIDELINE } from "@/data/deviceGuideline";
 import StepIndicator from "@/components/StepIndicator";
 import SetupStep from "@/components/SetupStep";
 import VideoStep from "@/components/VideoStep";
@@ -86,12 +87,24 @@ export default function Home() {
     setLoading(true);
     setError(null);
 
-    // 데모: API 없이 하드코딩된 가이드라인 표시
     await new Promise((r) => setTimeout(r, 1800));
-    setGuideline({
-      ...DEMO_GUIDELINE,
-      productName: productInfo.name || DEMO_GUIDELINE.productName,
-    });
+
+    if (subcategoryId === "device") {
+      const countryLabel = selectedCountries
+        .map((c) => `${c.flag} ${c.label}`)
+        .join(" · ");
+      setGuideline({
+        ...DEVICE_GUIDELINE,
+        productName: productInfo.name || DEVICE_GUIDELINE.productName,
+        country: countryLabel || DEVICE_GUIDELINE.country,
+      });
+    } else {
+      setGuideline({
+        ...DEMO_GUIDELINE,
+        productName: productInfo.name || DEMO_GUIDELINE.productName,
+      });
+    }
+
     setLoading(false);
     setStep("guideline");
   };
